@@ -9,7 +9,7 @@
   <bindings>
     <select itemPath="root.station" produces="XML">
       <urls>
-        <url>http://cdn.syndication.twimg.com/widgets/462673317418119168</url>
+        <url>https://cdn.syndication.twimg.com/widgets/timelines/462640513154170880</url>
       </urls>
       
     </select><inputs>
