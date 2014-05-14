@@ -13,7 +13,7 @@
       </urls>
       
     </select><inputs>
-      <key id="class" as="class" type="xs:string" paramType="query" required="false" default="h-entry tweet  with-expansion  customisable-border" />
+      <key class="class" as="class" type="xs:string" paramType="query" required="false" default="h-entry tweet  with-expansion  customisable-border" />
      
       </inputs>
   </bindings>
