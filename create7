@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table xmlns="http://query.yahooapis.com/v1/schema/table.xsd" >
+  <meta>
+    <author>coucouza</author>
+    <author>brother</author>
+
+    <description>Allows the authenticating users to follow the user specified in the ID parameter.
+
+Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user a HTTP 403 may be returned, though for performance reasons you may get a 200 OK message even if the friendship already exists.
+
+Actions taken in this method are asynchronous and changes will be eventually consistent.</description>
+    <documentationURL>https://dev.twitter.com/docs/api/1.1/post/friendships/create</documentationURL>
+
+    <!-- you may want to create your own oauth keys ... -->
+    <sampleQuery>INSERT INTO {table} (screen_name, user_id, follow, consumer_key, consumer_secret, access_token, access_token_secret) VALUES ("only29tomas", "1474863223", "true", "zL2JmEpyxjVnZnQe34FSdg", "E7kLeMkc6qCJE9SOXTnJ2ZjjH1ncMsa2rAj2jreh5Q", "1511058674-zSKhLU5YSbw2JsHGyudMYmEdclA2gdjNcR8EXlN", "gDWsV3kbV8MZ3RXEW13HbGLUXmVEqjaR2GrhZ5lZUlV58")</sampleQuery>
+
+  </meta>
+  <bindings>
+    <insert produces="JSON">
+      <urls>
+        <url>https://api.twitter.com/1.1/friendships/create.json</url>
+      </urls>
+      <inputs>
+        <key id="screen_name" type="xs:string" paramType="query" required="false"/>
+        <key id="user_id" type="xs:string" paramType="query" required="false"/>
+
+        <key id="follow" type="xs:string" paramType="query" required="false"/>
+        
+        
+        
+
+        <!-- Create app at https://dev.twitter.com/apps to obtain your personal OAuth keys. -->
+        <key id="consumer_key" type="xs:string" paramType="variable" required="true"/>
+        <key id="consumer_secret" type="xs:string" paramType="variable" required="true"/>
+        <key id="access_token" type="xs:string" paramType="variable" required="true"/>
+        <key id="access_token_secret" type="xs:string" paramType="variable" required="true"/>
+      </inputs>
+      <execute>
+        <![CDATA[
+       y.include("http://www.datatables.org/oauth/oauth.utils.js");
+
+var accessor = {};
+accessor.consumerKey = consumer_key;
+accessor.consumerSecret = consumer_secret;
+accessor.realm = request.url;
+accessor.token = access_token;
+accessor.tokenSecret = access_token_secret;
+
+
+var parameters = [];
+parameters.push(["user_id",user_id]);
+parameters.push(["follow",follow]);
+parameters.push(["screen_name",screen_name]);
+
+
+response.object = sendRequest({
+action: request.url,
+method: "POST",
+accessor: accessor,
+parameters: parameters
+});
+
+
+        ]]>
+      </execute>
+    </select>
+  </bindings>
+</table>
