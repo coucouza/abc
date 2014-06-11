@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table xmlns="http://query.yahooapis.com/v1/schema/table.xsd" >
+  <meta>
+    <author>coucouza</author>
+    <author>brother</author>
+
+    <description>createfollowers</description>
+    <documentationURL>twitter developper</documentationURL>
+
+    <!-- you may want to create your own oauth keys ... -->
+    <sampleQuery>INSERT INTO {table} (screen_name, follow, consumer_key, consumer_secret, access_token, access_token_secret ) VALUES ("only29tomas", "true", "cQxs7bA17xWF5qE1TMwFR20gK4MEdoT2rNurF0jo", "E7kLeMkc6qCJE9SOXTnJ2ZjjH1ncMsa2rAj2jreh5Q", "1511058674-zsGzdLNSwx0T7JXye4MmRKLt9FT9uZoJ5JhQb1V", "XA6T8YyghzW03QjmFEHgapM2idarpHvVXBmsmtpxb5naT")</sampleQuery>
+
+  </meta>
+  <bindings>
+    <insert produces="JSON">
+      <urls>
+        <url>https://api.twitter.com/1.1/friendships/create.json</url>
+      </urls>
+      <inputs>
+        <key id="screen_name" type="xs:string" paramType="variable" required="true"/>
+        <key id="user_id" type="xs:string" paramType="variable" required="false"/>
+        <key id="follow" type="xs:string" paramType="variable" required="true"/>
+       
+        
+
+        <!-- Create app at https://dev.twitter.com/apps to obtain your personal OAuth keys. -->
+        <key id="consumer_key" type="xs:string" paramType="variable" required="true"/>
+        <key id="consumer_secret" type="xs:string" paramType="variable" required="true"/>
+        <key id="access_token" type="xs:string" paramType="variable" required="true"/>
+        <key id="access_token_secret" type="xs:string" paramType="variable" required="true"/>
+      </inputs>
+      <execute>
+        <![CDATA[
+    y.include("http://www.datatables.org/oauth/oauth.utils.js");
+
+var accessor = {};
+accessor.consumerKey = consumer_key;
+accessor.consumerSecret = consumer_secret;
+accessor.realm = request.url;
+accessor.token = access_token;
+accessor.tokenSecret = access_token_secret;
+
+var parameters = [];
+parameters.push({"screen_name": screen_name})
+parameters.push({"follow": follow})
+
+
+response.object = sendRequest({
+action: request.url,
+method: "POST",
+accessor: accessor,
+parameters: parameters
+});
+        ]]>
+      </execute>
+    </insert>
+  </bindings>
+</table>
