@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table xmlns="http://query.yahooapis.com/v1/schema/table.xsd" >
+  <meta>
+    <author>coucouza</author>
+    <author>brothers</author>
+
+    <description>Returns a collection data.</description>
+    <documentationURL>http://www.acaai.org/allergist/Pages/locate_an_allergist.aspx</documentationURL>
+
+    <!-- you may want to create your own oauth keys ... -->
+    <sampleQuery>select * FROM {table} WHERE addressTextBox="new york"</sampleQuery>
+
+  </meta>
+  <bindings>
+    <select produces="JSON">
+      <urls>
+        <url>http://www.acaai.org/allergist/Pages/locate_an_allergist.aspx</url>
+      </urls>
+      <inputs>
+        
+        <key id="addressTextBox" type="xs:string" paramType="query" required="false"/>
+        
+      </inputs>
+        
+  
+    </select>
+  </bindings>
+</table>
