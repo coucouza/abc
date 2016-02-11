@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table xmlns="http://query.yahooapis.com/v1/schema/table.xsd" >
+  <meta>
+    <author>Zach Graves (zachg@yahoo-inc.com)</author>
+    <author>Matthias Kadenbach (https://github.com/mattes)</author>
+
+    <description>Updates the authenticating user’s current status, also known as Tweeting. Requires user context (OAuth keys). Create app at https://dev.twitter.com/apps to obtain your personal OAuth keys. The result is a string, make sure to parse it as JSON.</description>
+    <documentationURL>https://dev.twitter.com/rest/reference/post/statuses/update</documentationURL>
+
+    <!-- you may want to create your own oauth keys ... -->
+    <sampleQuery>insert into {table} (status, consumer_key,consumer_secret, access_token, access_token_secret) values ("new tweet from YQL",  @consumer_key, @consumer_secret, @access_token, @access_token_secret)</sampleQuery>
+
+  </meta>
+  <bindings>
+    <insert itemPath="" produces="JSON">
+      <urls>
+        <url>https://api.twitter.com/1.1/statuses/update.json</url>
+      </urls>
+      <inputs>
+        <value id="status" type="xs:string" paramType="variable" required="true"/>
+        <key id="in_reply_to_status_id" type="xs:string" paramType="query" required="false"/>
+
+        <key id="possibly_sensitive" type="xs:string" paramType="query" required="false"/>
+        <key id="lat" type="xs:float" paramType="query" required="false"/>
+        <key id="long " type="xs:float" paramType="query" required="false"/>
+        <key id="place_id " type="xs:string" paramType="query" required="false"/>
+        <key id="display_coordinates" type="xs:string" paramType="query" required="false"/>
+        <key id="trim_user" type="xs:string" paramType="query" required="false"/>
+        <key id="media_ids" type="xs:string" paramType="query" required="false"/>
+
+        <!-- Create app at https://dev.twitter.com/apps to obtain your personal OAuth keys. -->
+        <key id="consumer_key" type="xs:string" paramType="variable" required="true"/>
+        <key id="consumer_secret" type="xs:string" paramType="variable" required="true"/>
+        <key id="access_token" type="xs:string" paramType="variable" required="true"/>
+        <key id="access_token_secret" type="xs:string" paramType="variable" required="true"/>
+      </inputs>
+      <execute>
+        <![CDATA[
+        y.include("https://raw.githubusercontent.com/coucouza/abc/8d14717ec1d223aebcce16b3b48d6a478ac1b96e/oauth.utils2");
+        /* @todo parse json result here?! */
+        response.object = sendRequest({
+          action: request.url,
+          method: 'POST',
+          accessor: {
+            consumerKey: consumer_key,
+            consumerSecret: consumer_secret,
+            realm: request.url,
+            token: access_token,
+            tokenSecret: access_token_secret
+          },
+          parameters: {status:status}
+		  });
+        ]]>
+      </execute>
+    </insert>
+  </bindings>
+</table>
+<!-- dt1.yql.bf1.yahoo.com Sat Feb  6 18:50:31 UTC 2016 -->
